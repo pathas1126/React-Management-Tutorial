@@ -3,12 +3,37 @@ const bodyParser = require("body-parser");
 const app = express();
 const port = process.env.PORT || 5000;
 
+// REST API에서는 json 형태로 데이터를 주고 받음
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// http://localhost:5000/api/hello로 접속하면 { message: "Hello Express!" } 가 출력됨
-app.get("/api/hello", (req, res) => {
-  res.send({ message: "Hello Express!" });
+app.get("/api/customers", (req, res) => {
+  res.send([
+    {
+      id: 1,
+      image: "https://placeimg.com/64/64/0",
+      name: "홍길동",
+      birthday: "961222",
+      gender: "남자",
+      job: "대학생"
+    },
+    {
+      id: 2,
+      image: "https://placeimg.com/64/64/2",
+      name: "이순신",
+      birthday: "921222",
+      gender: "남자",
+      job: "프로그래머"
+    },
+    {
+      id: 3,
+      image: "https://placeimg.com/64/64/3",
+      name: "정약용",
+      birthday: "911222",
+      gender: "남자",
+      job: "대학원생"
+    }
+  ]);
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

@@ -19,7 +19,7 @@ Material-UI에서 가져온 컴포넌트에 추가로 스타일을 적용시킬 
 const styles = theme => ({
   root: {
     width: "100%",
-    margin: theme.spacing.unit * 3,
+    margin: theme.spacing(3),
     overflowX: "auto"
   },
   table: {
@@ -27,7 +27,7 @@ const styles = theme => ({
     minWidth: 1080
   },
   progress: {
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   }
 });
 
@@ -90,7 +90,7 @@ class App extends React.Component {
               })
             ) : (
               <TableRow>
-                <TableCell colspan="6" align="center">
+                <TableCell colSpan="6" align="center">
                   <CircularProgress
                     className={classes.progress}
                     variant="determinate"

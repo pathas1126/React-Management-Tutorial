@@ -105,6 +105,7 @@ class App extends React.Component {
             </TableBody>
           </Table>
         </Paper>
+        {/* 고객 추가 Form 컴포넌트 */}
         <CustomerAdd />
       </div>
     );

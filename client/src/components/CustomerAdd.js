@@ -43,6 +43,15 @@ class CustomerAdd extends React.Component {
     this.addCustomer().then(response => {
       console.log(response.data);
     });
+    // 데이터 전송 후 state초기화
+    this.setState({
+      file: null,
+      userName: "",
+      birthday: "",
+      gender: "",
+      job: "",
+      fileName: ""
+    });
   };
   // 고객 정보를 추가하는 함수
   addCustomer = () => {

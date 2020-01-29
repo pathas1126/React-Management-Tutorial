@@ -51,6 +51,7 @@ app.post("/api/customers", upload.single("image"), (req, res) => {
     // 성공적으로 전달되었다면 관련 메시지를 클라이언트에 전송
     res.send(rows);
   });
+  // 이미지 폴더가 git에 업로드 되지 않도록 .gitigonore 를 작성해주어야 함
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

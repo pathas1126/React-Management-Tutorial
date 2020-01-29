@@ -34,10 +34,25 @@ const styles = theme => ({
 });
 
 class App extends React.Component {
-  state = {
-    customers: "",
-    completed: 0
+  constructor(props) {
+    super(props);
+    this.state = {
+      customers: "",
+      completed: 0
+    };
+  }
+  /* state 초기화 함수, 리액트는 데이터가 변한 부분에 대해서만 새로고침을
+  진행하기 때문에 고객 정보가 추가된 후에 고객 목록만 새로고침이 진행되도록 함수 작성 */
+  stateRefresh = () => {
+    this.setState({
+      customers: "",
+      completed: 0
+    });
+    this.callApi()
+      .then(res => this.setState({ customers: res }))
+      .catch(err => console.log(err));
   };
+
   // Mount가 완료되었을 때 실행되는 함수, API를 불러올 때 효과적
   componentDidMount() {
     this.timer = setInterval(this.progress, 20);
@@ -106,7 +121,8 @@ class App extends React.Component {
           </Table>
         </Paper>
         {/* 고객 추가 Form 컴포넌트 */}
-        <CustomerAdd />
+        {/* 함수 자체를 props형태로 자식 컴포넌트에 전달 */}
+        <CustomerAdd stateRefresh={this.stateRefresh} />
       </div>
     );
   }

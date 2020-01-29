@@ -42,6 +42,9 @@ class CustomerAdd extends React.Component {
     // addCustomer() 함수를 호출하고, 서버로부터 받아온 데이터를 콘솔창에 출력함
     this.addCustomer().then(response => {
       console.log(response.data);
+      /* 부모 컴포넌트로부터 전달받은 함수, 고객 정보를 추가하고
+      서버로부터 응답을 받은 이후에 고객 목록을 다시 불러오도록 함 */
+      this.props.stateRefresh();
     });
     // 데이터 전송 후 state초기화
     this.setState({

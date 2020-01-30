@@ -22,7 +22,7 @@ import IconButton from "@material-ui/core/IconButton";
 // 텍스트를 담는 Material-UI 라이브러리
 import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
-import { fade, makeStyles } from "@material-ui/core/styles";
+import { fade } from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 
@@ -103,7 +103,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       customers: "",
-      completed: 0
+      completed: 0,
+      searchkeyword: ""
     };
   }
   /* state 초기화 함수, 리액트는 데이터가 변한 부분에 대해서만 새로고침을
@@ -111,7 +112,8 @@ class App extends React.Component {
   stateRefresh = () => {
     this.setState({
       customers: "",
-      completed: 0
+      completed: 0,
+      searchKeyword: ""
     });
     this.callApi()
       .then(res => this.setState({ customers: res }))
@@ -140,7 +142,39 @@ class App extends React.Component {
     this.setState({ completed: completed >= 100 ? 0 : completed + 1 });
   };
 
+  // 고객 검색 함수, state 값에 상태 변화를 만들어 줌,
+  // event 타겟의 이름(searchKeyword)을 key로 하고,
+  // 그 값을 value로 하는 객체 nextState 이용
+  // CustomerAdd.js 의 handleValueChange와 동일함
+  handleValueChange = e => {
+    let nextState = {};
+    nextState[e.target.name] = e.target.value;
+    this.setState(nextState);
+  };
+
   render() {
+    // 고객 검색 및 검색 내용 출력 함수
+    const filteredComponents = data => {
+      data = data.filter(c => {
+        // data 매개변수로 전달받은 문자열에 searchKeyword(검색어)가 포함되어 있는지 확인하고, 그 정보를 data 변수에 저장
+        return c.name.indexOf(this.state.searchKeyword) > -1;
+      });
+      // data에 map함수를 이용해서 각 원소 출력
+      return data.map(c => {
+        return (
+          <Customer
+            stateRefresh={this.stateRefresh}
+            key={c.id}
+            id={c.id}
+            image={c.image}
+            name={c.name}
+            birthday={c.birthday}
+            gender={c.gender}
+            job={c.job}
+          />
+        );
+      });
+    };
     const { classes } = this.props;
     const cellList = [
       "번호",
@@ -176,6 +210,12 @@ class App extends React.Component {
                   root: classes.inputRoot,
                   input: classes.inputInput
                 }}
+                // handleValueChange의 nextState의 key
+                name="searchKeyword"
+                // handleValueChange의 nextState의 value
+                value={this.state.searchKeyword}
+                // onChange 이벤트 발생시 handleValueChange 호출
+                onChange={this.handleValueChange}
                 inputProps={{ "aria-label": "search" }}
               />
             </div>
@@ -192,30 +232,18 @@ class App extends React.Component {
               <TableRow>
                 {cellList.map(c => {
                   return (
-                    <TableCell calssName={classes.TableHead}>{c}</TableCell>
+                    <TableCell className={classes.tableHead}>{c}</TableCell>
                   );
                 })}
               </TableRow>
             </TableHead>
             <TableBody>
+              {/* 고객 정보 출력 함수 */}
               {this.state.customers ? (
-                this.state.customers.map(c => {
-                  return (
-                    <Customer
-                      stateRefresh={this.stateRefresh}
-                      key={c.id}
-                      id={c.id}
-                      image={c.image}
-                      name={c.name}
-                      birthday={c.birthday}
-                      gender={c.gender}
-                      job={c.job}
-                    />
-                  );
-                })
+                filteredComponents(this.state.customers)
               ) : (
                 <TableRow>
-                  <TableCell colSpan="7" align="center">
+                  <TableCell colSpan="6" align="center">
                     <CircularProgress
                       className={classes.progress}
                       variant="determinate"

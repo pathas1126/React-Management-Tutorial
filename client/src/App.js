@@ -230,9 +230,15 @@ class App extends React.Component {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                {cellList.map(c => {
+                {/* 리액트에서 배열로 화면을 출력하는 경우, key props에 
+                고유한 값이 없으면 콘솔창에 에러가 발생함, 
+                따라서 map() 메소드의 두 번째 매개변수 index를 사용해서
+                key props에 배열의 index를 전달하면 이를 해결할 수 있음  */}
+                {cellList.map((c, index) => {
                   return (
-                    <TableCell className={classes.tableHead}>{c}</TableCell>
+                    <TableCell className={classes.tableHead} key={index}>
+                      {c}
+                    </TableCell>
                   );
                 })}
               </TableRow>

@@ -104,7 +104,7 @@ class App extends React.Component {
     this.state = {
       customers: "",
       completed: 0,
-      searchkeyword: ""
+      searchKeyword: ""
     };
   }
   /* state 초기화 함수, 리액트는 데이터가 변한 부분에 대해서만 새로고침을
